@@ -6,9 +6,26 @@ db_session.global_init('space.sqlite')
 session = db_session.create_session()
 
 objects = [
-    User(surname='Scott', name='Ridley'),
-    User(surname='Weir', name='Andy'),
-    User(surname='Sanders', name='Teddy'),
+    User(
+        surname='Scott', name='Ridley', age=21,
+        position='captain', speciality='research engineer',
+        address='module_1', email='scott_chief@mars.org'
+    ),
+    User(
+        surname='Weir', name='Andy', age=24,
+        position='chief', speciality='scientist',
+        address='module_2', email='andy_787@mars.org'
+    ),
+    User(
+        surname='Sanders', name='Teddy', age=23,
+        position='middle', speciality='scientist',
+        address='module_2', email='tedsan@mars.org'
+    ),
+    User(
+        surname='Bean', name='Sean', age=26,
+        position='chief', speciality='builder',
+        address='module_3', email='beans4all@mars.org'
+    ),
     Jobs(
         team_leader_id=1,
         job='Deployment of residential modules 1 and 2',
