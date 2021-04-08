@@ -1,6 +1,7 @@
 from data import db_session
 from data.jobs import Jobs
 from data.users import User
+from data.departments import Department
 
 db_session.global_init('space.sqlite')
 session = db_session.create_session()
@@ -46,6 +47,24 @@ objects = [
         work_size=25,
         collaborators='5',
         is_finished=0
+    ),
+    Department(
+        title='Department of geological exploration',
+        chief_id=2,
+        members='3, 4, 5',
+        email='geo@mars.org'
+    ),
+    Department(
+        title='Department of construction',
+        chief_id=4,
+        members='16, 17, 28',
+        email='build@mars.org'
+    ),
+    Department(
+        title='Department of terraforming',
+        chief_id=1,
+        members='4, 5, 6',
+        email='terra@mars.org'
     )
 ]
 
