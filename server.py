@@ -36,15 +36,14 @@ def register():
             return render_template('register.html',
                                    form=form,
                                    message='Такой пользователь уже есть')
-        user = User(
-            surname=form.surname.data,
-            name=form.name.data,
-            email=form.email.data,
-            age=form.age.data,
-            position=form.position.data,
-            speciality=form.speciality.data,
-            address=form.address.data
-        )
+        user = User()
+        user.surname = form.surname.data
+        user.name = form.name.data
+        user.email = form.email.data
+        user.age = form.age.data
+        user.position = form.position.data
+        user.speciality = form.speciality.data
+        user.address = form.address.data
         user.set_password(form.password.data)
         db_sess.add(user)
         db_sess.commit()
@@ -86,13 +85,12 @@ def add_job():
     form = AddJobForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
-        job = Jobs(
-            team_leader_id=form.team_leader_id.data,
-            job=form.title.data,
-            work_size=form.work_size.data,
-            collaborators=form.collaborators.data,
-            is_finished=form.is_finished.data
-        )
+        job = Jobs()
+        job.team_leader_id = form.team_leader_id.data
+        job.job = form.title.data
+        job.work_size = form.work_size.data
+        job.collaborators = form.collaborators.data
+        job.is_finished = form.is_finished.data
         db_sess.add(job)
         db_sess.merge(current_user)
         db_sess.commit()
