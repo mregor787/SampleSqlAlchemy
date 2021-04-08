@@ -1,11 +1,12 @@
 from flask import Flask, render_template, redirect
 from flask_login import LoginManager, login_user, \
-    logout_user, login_required
+    logout_user, login_required, current_user
 from data import db_session
 from data.users import User
 from data.jobs import Jobs
 from forms.register import RegisterForm
 from forms.login import LoginForm
+from forms.addjob import AddJobForm
 
 app = Flask(__name__)
 
@@ -29,12 +30,12 @@ def register():
         if form.password.data != form.password_again.data:
             return render_template('register.html',
                                    form=form,
-                                   message="Пароли не совпадают")
+                                   message='Пароли не совпадают')
         db_sess = db_session.create_session()
         if db_sess.query(User).filter(User.email == form.email.data).first():
             return render_template('register.html',
                                    form=form,
-                                   message="Такой пользователь уже есть")
+                                   message='Такой пользователь уже есть')
         user = User(
             surname=form.surname.data,
             name=form.name.data,
@@ -65,9 +66,9 @@ def login():
         user = db_sess.query(User).filter(User.email == form.email.data).first()
         if user and user.check_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
-            return redirect("/")
+            return redirect('/')
         return render_template('login.html',
-                               message="Неправильный логин или пароль",
+                               message='Неправильный логин или пароль',
                                form=form)
     return render_template('login.html', title='Authorization', form=form)
 
@@ -76,7 +77,27 @@ def login():
 @login_required
 def logout():
     logout_user()
-    return redirect("/")
+    return redirect('/')
+
+
+@app.route('/addjob', methods=['GET', 'POST'])
+@login_required
+def add_job():
+    form = AddJobForm()
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        job = Jobs(
+            team_leader_id=form.team_leader_id.data,
+            job=form.title.data,
+            work_size=form.work_size.data,
+            collaborators=form.collaborators.data,
+            is_finished=form.is_finished.data
+        )
+        db_sess.add(job)
+        db_sess.merge(current_user)
+        db_sess.commit()
+        return redirect('/')
+    return render_template('addjob.html', title='Adding a job', form=form)
 
 
 if __name__ == '__main__':
