@@ -1,8 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h3 style="text-align: center;">Works log</h3>
-<div style="margin-left: 50px; margin-right: 50px; overflow: auto;">
+    <h3 style="text-align: center;">Works log</h3>
     {% for job in jobs %}
     <h4>Action # {{ job.id }}</h4>
     <table class="table table-bordered align-middle" style="text-align: center;">
@@ -30,5 +29,4 @@
         </tbody>
     </table>
     {% endfor %}
-</div>
 {% endblock %}
